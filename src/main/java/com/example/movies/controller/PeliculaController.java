@@ -23,6 +23,11 @@ public class PeliculaController {
         return service.obtenerTodas();
     }
 
+    @GetMapping("/test")
+    public List<?> test() {
+        return service.testNativeQuery();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> obtenerPorId(@PathVariable Long id) {
         return service.obtenerPorId(id)

@@ -2,7 +2,6 @@ package com.example.movies.service;
 
 import com.example.movies.model.Pelicula;
 import com.example.movies.repository.PeliculaRepository;
-import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +11,9 @@ import java.util.Optional;
 public class PeliculaService {
 
     private final PeliculaRepository repository;
-    private final EntityManager entityManager;
 
-    public PeliculaService(PeliculaRepository repository, EntityManager entityManager) {
+    public PeliculaService(PeliculaRepository repository) {
         this.repository = repository;
-        this.entityManager = entityManager;
     }
 
     public List<Pelicula> obtenerTodas() {
@@ -27,9 +24,15 @@ public class PeliculaService {
         return repository.findById(id);
     }
 
-    public List<?> testNativeQuery() {
-        return entityManager.createNativeQuery(
-            "SELECT COUNT(*) FROM ADMIN.PELICULAS"
-        ).getResultList();
+    public Pelicula crear(Pelicula pelicula) {
+        return repository.save(pelicula);
+    }
+
+    public boolean eliminar(Long id) {
+        if (!repository.existsById(id)) {
+            return false;
+        }
+        repository.deleteById(id);
+        return true;
     }
 }
